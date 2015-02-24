@@ -21,15 +21,28 @@ import model.Word;
 public class Treatment {
 
     /**
+     * Current dictionary.
+     */
+    private final Dictionary czech;
+
+    /**
+     * Create a new instance in order to do some process.
+     *
+     * @param czech
+     */
+    public Treatment(Dictionary czech) {
+        this.czech = czech;
+    }
+
+    /**
      * Get a word with a specific name.
      *
-     * @param czech Dictionary
      * @param name Name of the word
      * @return Array
      */
-    public static String[] get(Dictionary czech, String name) {
+    public String[] get(String name) {
         ArrayList<String> res = new ArrayList<>();
-        int id1 = searchIdWord(czech, czech.getLanguage1(), name);
+        int id1 = searchIdWord(czech.getLanguage1(), name);
         if (id1 != -1) {
             System.out.println("Find \"" + czech.getLanguage1().getName() + "\" : " + printWord(czech.getListWords1().get(id1)));
             for (Link l : czech.getListLinks()) {
@@ -40,7 +53,7 @@ public class Treatment {
             }
         }
 
-        int id2 = searchIdWord(czech, czech.getLanguage2(), name);
+        int id2 = searchIdWord(czech.getLanguage2(), name);
         if (id2 != -1) {
             System.out.println("Find \"" + czech.getLanguage2().getName() + "\" : " + printWord(czech.getListWords2().get(id2)));
             for (Link l : czech.getListLinks()) {
@@ -61,12 +74,11 @@ public class Treatment {
     /**
      * Search id of the word, to check if it's exists.
      *
-     * @param czech Dictionary
      * @param language The language
      * @param name Name of the word.
      * @return id (-1 if not exist)
      */
-    public static int searchIdWord(Dictionary czech, Language language, String name) {
+    public int searchIdWord(Language language, String name) {
         HashMap<Integer, Word> map;
         // Loop for HashMap
         if (czech.getLanguage1().equals(language)) {
@@ -96,7 +108,6 @@ public class Treatment {
     /**
      * Add a new link.
      *
-     * @param czech Dictionary
      * @param name1 Name of first word.
      * @param name2 Name of second word.
      * @param gender1 Gender of first word.
@@ -105,26 +116,26 @@ public class Treatment {
      * @param phonetic2 Phonetic of second word.
      * @return true or false
      */
-    public static boolean add(Dictionary czech, String name1, String name2, String gender1, String gender2, String phonetic1, String phonetic2) {
-        if(name1.equals("") ||name2.equals("") || gender1.equals("") || gender2.equals("")|| phonetic1.equals("") || phonetic2.equals("")) {
+    public boolean add(String name1, String name2, String gender1, String gender2, String phonetic1, String phonetic2) {
+        if (name1.equals("") || name2.equals("") || gender1.equals("") || gender2.equals("") || phonetic1.equals("") || phonetic2.equals("")) {
             return false;
         }
         System.out.println("*** ADD NEW " + czech.getLanguage1().getName() + "/" + czech.getLanguage2().getName() + " WORD ***");
-        int id1 = searchIdWord(czech, czech.getLanguage1(), name1);
+        int id1 = searchIdWord(czech.getLanguage1(), name1);
         if (id1 == (-1)) {
             // New word
             System.out.println("Oh no, word does not exist... ");
-            id1 = addNewWord(czech, czech.getLanguage1(), name1, gender1, phonetic1);
+            id1 = addNewWord(czech.getLanguage1(), name1, gender1, phonetic1);
             System.out.println("Id of new word : " + id1);
         } else {
             System.out.println("Ok, word exists (ID " + id1 + ")");
         }
 
-        int id2 = searchIdWord(czech, czech.getLanguage2(), name2);
+        int id2 = searchIdWord(czech.getLanguage2(), name2);
         if (id2 == (-1)) {
             // New word
             System.out.println("Oh no, word does not exist... ");
-            id2 = addNewWord(czech, czech.getLanguage2(), name2, gender2, phonetic2);
+            id2 = addNewWord(czech.getLanguage2(), name2, gender2, phonetic2);
             System.out.println("Id of new word : " + id2);
         } else {
             System.out.println("Ok, word exists (ID " + id2 + ")");
@@ -145,7 +156,7 @@ public class Treatment {
     /**
      * Add a new word when don't exist.
      */
-    private static int addNewWord(Dictionary czech, Language language, String name, String gender, String phonetic) {
+    private int addNewWord(Language language, String name, String gender, String phonetic) {
         // Create word
         Word newWord = new Word(name);
         newWord.setLanguage(language);

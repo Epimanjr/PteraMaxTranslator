@@ -22,6 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         czech.initialize();
+        treat = new Treatment(czech);
         labelTitle.setText(czech.getLanguage1().getName() + "/" + czech.getLanguage2().getName() + " dictionary !");
         labNew1.setText(czech.getLanguage1().getName());
         labNew2.setText(czech.getLanguage2().getName());
@@ -179,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void validateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validateActionPerformed
         // TODO add your handling code here:
-        boolean b = Treatment.add(czech, name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
+        boolean b = treat.add(name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
         if(b) {
             validate.setBackground(Color.GREEN);
         } else {
@@ -189,7 +190,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         // TODO add your handling code here:
-        String[] array = Treatment.get(czech, search.getText());
+        String[] array = treat.get(search.getText());
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = array;
 
@@ -240,6 +241,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
+    private Treatment treat;
     public Dictionary czech = new Dictionary(Language.Czech, Language.French);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField gender1;
