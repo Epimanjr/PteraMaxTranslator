@@ -23,7 +23,9 @@ public class Treatment {
     /**
      * Get a word with a specific name.
      *
+     * @param czech Dictionary
      * @param name Name of the word
+     * @return Array
      */
     public static String[] get(Dictionary czech, String name) {
         ArrayList<String> res = new ArrayList<>();
