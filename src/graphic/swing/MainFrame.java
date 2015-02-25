@@ -63,7 +63,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setForeground(new java.awt.Color(178, 0, 93));
+
+        jLabel6.setForeground(new java.awt.Color(178, 0, 93));
         jLabel6.setText("phonetic");
+
+        labNew1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        labNew1.setForeground(new java.awt.Color(178, 0, 93));
+
+        labNew2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        labNew2.setForeground(new java.awt.Color(178, 0, 93));
 
         validate.setText("Validate new word");
         validate.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +86,8 @@ public class MainFrame extends javax.swing.JFrame {
         labelTitle.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         labelTitle.setForeground(new java.awt.Color(0, 204, 0));
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(178, 0, 93));
         jLabel1.setText("Search a word : ");
 
         search.addActionListener(new java.awt.event.ActionListener() {
@@ -89,8 +100,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 204, 0));
         jLabel2.setText("Add a new word !");
 
+        jLabel4.setForeground(new java.awt.Color(178, 0, 93));
         jLabel4.setText("word");
 
+        jLabel5.setForeground(new java.awt.Color(178, 0, 93));
         jLabel5.setText("gender");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
