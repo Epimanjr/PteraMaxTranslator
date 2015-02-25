@@ -16,7 +16,7 @@ import model.Word;
 
 /**
  *
- * @author Maxime
+ * @author Maxime BLAISE
  */
 public class Treatment {
 
@@ -177,12 +177,30 @@ public class Treatment {
         return newWord.getId();
     }
 
-    public String generateHtml(ArrayList<Word> list) {
+    public String htmlForSingleLanguage(ArrayList<Word> list) {
         // Init
         String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD";
         // Loop
         for (Word w : list) {
             res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span>   <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
+        }
+        // Return
+        return res + "</html>";
+    }
+    
+    public static String htmlForMultiLanguage(Language src, ArrayList<Language> dest, String word) {
+        // Init
+        String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD";
+        // First, find the word in source language !
+        HashMap<Integer, Word> wordsSrc = ReadTreatment.readListWords(src);
+        Set cle = wordsSrc.keySet();
+        Iterator it = cle.iterator();
+        while(it.hasNext()) {
+            int i = (int) it.next();
+            if(wordsSrc.get(i).getName().equalsIgnoreCase(word)) {
+                res += "<p>" + word + "</p>";
+                break;
+            } 
         }
         // Return
         return res + "</html>";

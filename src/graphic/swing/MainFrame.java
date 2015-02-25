@@ -317,7 +317,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         // TODO add your handling code here:
         ArrayList<Word> list = treat.get(search.getText());
-        jLabel3.setText(treat.generateHtml(list));
+        jLabel3.setText(treat.htmlForSingleLanguage(list));
     }//GEN-LAST:event_searchActionPerformed
 
     private void resultLanguagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultLanguagesActionPerformed
@@ -350,6 +350,8 @@ public class MainFrame extends javax.swing.JFrame {
             if(word.equals("")) {
                 throw new EmptyWordException();
             }
+            // Translate
+            labResult.setText(Treatment.htmlForMultiLanguage(src, dest, word));
         } catch (LanguageException ex) {
             JOptionPane.showMessageDialog(null, "Error in selecting language !", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (EmptyWordException ex) {
