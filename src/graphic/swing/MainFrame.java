@@ -351,7 +351,7 @@ public class MainFrame extends javax.swing.JFrame {
                 throw new EmptyWordException();
             }
             // Translate
-            labResult.setText(Treatment.htmlForMultiLanguage(src, dest, word));
+            //labResult.setText(Treatment.htmlForMultiLanguage(src, dest, word));
         } catch (LanguageException ex) {
             JOptionPane.showMessageDialog(null, "Error in selecting language !", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (EmptyWordException ex) {

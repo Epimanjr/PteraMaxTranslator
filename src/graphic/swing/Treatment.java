@@ -188,21 +188,5 @@ public class Treatment {
         return res + "</html>";
     }
     
-    public static String htmlForMultiLanguage(Language src, ArrayList<Language> dest, String word) {
-        // Init
-        String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD";
-        // First, find the word in source language !
-        HashMap<Integer, Word> wordsSrc = ReadTreatment.readListWords(src);
-        Set cle = wordsSrc.keySet();
-        Iterator it = cle.iterator();
-        while(it.hasNext()) {
-            int i = (int) it.next();
-            if(wordsSrc.get(i).getName().equalsIgnoreCase(word)) {
-                res += "<p>" + word + "</p>";
-                break;
-            } 
-        }
-        // Return
-        return res + "</html>";
-    }
+    
 }
