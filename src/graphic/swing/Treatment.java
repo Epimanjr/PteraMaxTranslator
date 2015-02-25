@@ -40,17 +40,23 @@ public class Treatment {
      * @param name Name of the word
      * @return Array
      */
-    public String[] get(String name) {
-        ArrayList<String> res = new ArrayList<>();
+    public ArrayList<Word> get(String name) {
+        ArrayList<Word> res = new ArrayList<>();
+        boolean add = false;
         int id1 = searchIdWord(czech.getLanguage1(), name);
         if (id1 != -1) {
             System.out.println("Find \"" + czech.getLanguage1().getName() + "\" : " + printWord(czech.getListWords1().get(id1)));
             for (Link l : czech.getListLinks()) {
                 if (l.getId1() == id1) {
                     System.out.println(czech.getLanguage2().getName() + " -> " + printWord(czech.getListWords2().get(l.getId2())));
-                    res.add(printWord(czech.getListWords2().get(l.getId2())));
+                    res.add(czech.getListWords2().get(l.getId2()));
+                    add = true;
                 }
             }
+        }
+
+        if (add) {
+            return res;
         }
 
         int id2 = searchIdWord(czech.getLanguage2(), name);
@@ -59,16 +65,12 @@ public class Treatment {
             for (Link l : czech.getListLinks()) {
                 if (l.getId2() == id2) {
                     System.out.println(czech.getLanguage1().getName() + " -> " + printWord(czech.getListWords1().get(l.getId1())));
-                    res.add(printWord(czech.getListWords1().get(l.getId1())));
+                    res.add(czech.getListWords1().get(l.getId1()));
                 }
             }
         }
 
-        String[] ress = new String[res.size()];
-        for (int i = 0; i < res.size(); i++) {
-            ress[i] = res.get(i);
-        }
-        return ress;
+        return res;
     }
 
     /**
@@ -173,5 +175,16 @@ public class Treatment {
             System.out.println("Error in language !");
         }
         return newWord.getId();
+    }
+
+    public String generateHtml(ArrayList<Word> list) {
+        // Init
+        String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD";
+        // Loop
+        for (Word w : list) {
+            res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span>   <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
+        }
+        // Return
+        return res + "</html>";
     }
 }
