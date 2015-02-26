@@ -304,10 +304,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     public String htmlForSingleLanguage(ArrayList<Word> list) {
         // Init
-        String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD";
+        String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD", colorGender = "#222222";
         // Loop
         for (Word w : list) {
-            res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span>   <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
+            res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span> ";
+            if(!w.getGender().trim().equals("")) {
+                res += "<span color=\"" + colorGender + "\">" + w.getGender() + "</span> ";
+            }
+            res += " <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
         }
         // Return
         return res + "</html>";
