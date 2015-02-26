@@ -3,6 +3,7 @@ package model;
 import exception.FileNotExistException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -162,7 +163,7 @@ public class NewDictionary {
         }
         return false;
     }
-    
+
     /**
      * Get a translate from a language into a list of another languages.
      *
@@ -175,7 +176,7 @@ public class NewDictionary {
         // Init
         ArrayList<ArrayList<Word>> res = new ArrayList<>();
         // Loop
-        for(Language language : dest) {
+        for (Language language : dest) {
             res.add(getTranslate(src, language, idWord));
         }
         // Result
@@ -194,12 +195,12 @@ public class NewDictionary {
         System.out.println("Try to search " + idWord + " in languages " + src.getIso() + "-" + dest.getIso());
         // Init result
         ArrayList<Word> res = new ArrayList<>();
-        if(idWord != -1) {
+        if (idWord != -1) {
             // Get the list of links
             String languages = src.getIso() + dest.getIso();
             ArrayList<Link> list = this.listLinks.get(languages);
-            for(Link link : list) {
-                if(link.getId1() == idWord) {
+            for (Link link : list) {
+                if (link.getId1() == idWord) {
                     // Add new word to the result list
                     res.add(this.listWords.get(dest).get(link.getId2()));
                 }
@@ -232,6 +233,60 @@ public class NewDictionary {
             }
         }
         return null;
+    }
+
+    /**
+     * Save the data after insert a new link (and words)
+     *
+     * @param l1 First language
+     * @param l2 Second language
+     */
+    public void save(Language l1, Language l2) {
+        // Save words
+        saveWords(l1);
+        saveWords(l1);
+        // Save links
+        saveLinks(l1, l2);
+        saveLinks(l2, l1);
+    }
+    
+    public void saveLinks(Language l1, Language l2) {
+         // Init pathname
+        String pathname = Config.folderName + "/" + Config.linkFileName + l1.getIso() + l2.getIso() + Config.extension;
+        // Get instance
+        String str = l1.getIso() + l2.getIso();
+        ArrayList<Link> list = this.listLinks.get(str);
+        try {
+            try ( // Init stream
+                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathname))) {
+                // Write
+                oos.writeObject(list);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Save the words of a specific language.
+     *
+     * @param l1 Language
+     */
+    public void saveWords(Language l1) {
+        // Init pathname
+        String pathname = Config.folderName + "/" + Config.wordFileName + l1.getIso() + Config.extension;
+        // Get instance
+        HashMap<Integer, Word> map = this.listWords.get(l1);
+        try {
+            try ( // Init stream
+                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathname))) {
+                // Write
+                oos.writeObject(map);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /* GETTERS AND SETTERS */
