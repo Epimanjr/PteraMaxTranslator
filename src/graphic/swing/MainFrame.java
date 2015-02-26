@@ -5,17 +5,9 @@
  */
 package graphic.swing;
 
-import exception.EmptyWordException;
-import exception.LanguageException;
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import model.Dictionary;
 import model.Language;
+import model.NewDictionary;
 import model.Word;
 
 /**
@@ -29,14 +21,14 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        initMenu();
         this.setTitle("PteraMax Translator");
         this.setResizable(false);
+        czech = new NewDictionary(listLanguages);
         czech.initialize();
-        treat = new Treatment(czech);
-        labelTitle.setText(czech.getLanguage1().getName() + "/" + czech.getLanguage2().getName() + " dictionary !");
-        labNew1.setText(czech.getLanguage1().getName());
-        labNew2.setText(czech.getLanguage2().getName());
+       
+        labelTitle.setText(listLanguages.get(0).getName() + "/" + listLanguages.get(1).getName() + " dictionary !");
+        labNew1.setText(listLanguages.get(0).getName());
+        labNew2.setText(listLanguages.get(1).getName());
         
     }
 
@@ -70,13 +62,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        resultLanguages = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        searchMulti = new javax.swing.JTextField();
-        labResult = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,73 +208,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Simple dictionary", jPanel1);
 
-        resultLanguages.setText("Choose");
-        resultLanguages.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resultLanguagesActionPerformed(evt);
-            }
-        });
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel7.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 204, 0));
-        jLabel7.setText("Source language");
-
-        jLabel8.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 204, 0));
-        jLabel8.setText("Result languages");
-
-        searchMulti.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchMultiActionPerformed(evt);
-            }
-        });
-
-        labResult.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        labResult.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(resultLanguages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(searchMulti, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(116, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultLanguages))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchMulti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labResult, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Multi dictionary", jPanel2);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -304,60 +222,23 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        // TODO add your handling code here:
+        
+        if(!searchAction(0, 1)) {
+            searchAction(1, 0);
+        }
+    }//GEN-LAST:event_searchActionPerformed
+
     private void validateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validateActionPerformed
         // TODO add your handling code here:
-        boolean b = treat.add(name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
+        /*boolean b = treat.add(name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
         if (b) {
             validate.setBackground(Color.GREEN);
         } else {
             validate.setBackground(Color.RED);
-        }
+        }*/
     }//GEN-LAST:event_validateActionPerformed
-
-    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        // TODO add your handling code here:
-        ArrayList<Word> list = treat.get(search.getText());
-        jLabel3.setText(treat.htmlForSingleLanguage(list));
-    }//GEN-LAST:event_searchActionPerformed
-
-    private void resultLanguagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultLanguagesActionPerformed
-        // TODO add your handling code here:
-        menu.show(resultLanguages, 0, resultLanguages.getHeight());
-    }//GEN-LAST:event_resultLanguagesActionPerformed
-
-    private void searchMultiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMultiActionPerformed
-        // TODO add your handling code here:
-        try {
-            // Get Source language
-            int id = jComboBox1.getSelectedIndex();
-            Language src = listLanguages.get(id);
-            // Get Dest language
-            ArrayList<Language> dest = new ArrayList<>();
-            for (int i = 0; i < listLanguages.size(); i++) {
-                if (listMenuItems.get(i).isSelected()) {
-                    if (i == id) {
-                        throw new LanguageException();
-                    } else {
-                        dest.add(listLanguages.get(i));
-                    }
-                }
-            }       
-            if(dest.isEmpty()) {
-                throw new LanguageException();
-            }
-            // Get the word
-            String word = searchMulti.getText().trim();  
-            if(word.equals("")) {
-                throw new EmptyWordException();
-            }
-            // Translate
-            //labResult.setText(Treatment.htmlForMultiLanguage(src, dest, word));
-        } catch (LanguageException ex) {
-            JOptionPane.showMessageDialog(null, "Error in selecting language !", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (EmptyWordException ex) {
-            JOptionPane.showMessageDialog(null, "You don't written any word !", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_searchMultiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -386,7 +267,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        // Init list of languages
+        listLanguages = new ArrayList<>();
+        listLanguages.add(new Language("čestiná", "cs"));
+        listLanguages.add(new Language("français", "fr"));
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -396,62 +280,59 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     
-    private final Treatment treat;
-    public Dictionary czech = new Dictionary(Language.Czech, Language.French);
-    private ArrayList<JCheckBoxMenuItem> listMenuItems;
-    private ArrayList<Language> listLanguages;
-    private JPopupMenu menu;
+    public static NewDictionary czech;
+    public static ArrayList<Language> listLanguages;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField gender1;
     private javax.swing.JTextField gender2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labNew1;
     private javax.swing.JLabel labNew2;
-    private javax.swing.JLabel labResult;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JTextField name1;
     private javax.swing.JTextField name2;
     private javax.swing.JTextField phonetic1;
     private javax.swing.JTextField phonetic2;
-    private javax.swing.JButton resultLanguages;
     private javax.swing.JTextField search;
-    private javax.swing.JTextField searchMulti;
     private javax.swing.JButton validate;
     // End of variables declaration//GEN-END:variables
 
-    private void initMenu() {
-        // Init languages
-        listLanguages = new ArrayList<>();
-        listLanguages.add(Language.Czech);
-        listLanguages.add(Language.French);
-        // Init source languages
-        String[] src = new String[listLanguages.size()];
-        for (int i = 0; i < listLanguages.size(); i++) {
-            src[i] = listLanguages.get(i).getName();
+    public String htmlForSingleLanguage(ArrayList<Word> list) {
+        // Init
+        String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD";
+        // Loop
+        for (Word w : list) {
+            res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span>   <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
         }
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(src));
-        // Init result languages
-        listMenuItems = new ArrayList<>();
-        for (Language l : listLanguages) {
-            listMenuItems.add(new JCheckBoxMenuItem(l.getName()));
+        // Return
+        return res + "</html>";
+    }
+    
+    public boolean searchAction(int i1, int i2) {
+        System.out.print("Try to search the word " + search.getText() + " ... ");
+        Word word = czech.searchWord(listLanguages.get(i1), search.getText());
+        if(word != null) {
+            if(word.getId() != -1) {
+                System.out.println("OK");
+                // OK
+                ArrayList<Word> list = czech.getTranslate(listLanguages.get(i1), listLanguages.get(i2), word.getId());
+                jLabel3.setText(htmlForSingleLanguage(list));
+                return true;
+            } else {
+                System.out.println("ID (-1)");
+            }
+        } else {
+            System.out.println("NULL");
         }
-        // Init menu
-        menu = new JPopupMenu();
-        for (JCheckBoxMenuItem item : listMenuItems) {
-            menu.add(item);
-        }
+        return false;
     }
 }

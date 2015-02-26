@@ -61,14 +61,14 @@ public class NewDictionary {
             }
         }
         // Loop for all combinaisons
-        for(int i=0;i<this.listLanguages.size();i++) {
-            for(int j=0;j<this.listLanguages.size();i++) {
+        for (int i = 0; i < this.listLanguages.size(); i++) {
+            for (int j = 0; j < this.listLanguages.size(); j++) {
                 // Only if languages if differents
-                if(i != j ) {
+                if (i != j) {
                     System.out.print("Initialize list of \"" + this.listLanguages.get(i).getName() + "-" + this.listLanguages.get(j).getName() + "\" links ...");
-                    if(initializeSpecificListLinks(this.listLanguages.get(i), this.listLanguages.get(j))) {
+                    if (initializeSpecificListLinks(this.listLanguages.get(i), this.listLanguages.get(j))) {
                         System.out.println("OK (" + this.listLinks.get(this.listLanguages.get(i).getIso() + this.listLanguages.get(j).getIso()).size() + " elements.)");
-                    } else{
+                    } else {
                         System.out.println("NON OK");
                     }
                 }
@@ -110,6 +110,7 @@ public class NewDictionary {
                     map = new HashMap<>();
                     this.listWords.put(language, map);
                     oos.writeObject(map);
+                    return true;
                 }
             } catch (IOException ex1) {
                 Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex1);
@@ -153,12 +154,59 @@ public class NewDictionary {
                     list = new ArrayList<>();
                     this.listLinks.put(language1.getIso() + language2.getIso(), list);
                     oos.writeObject(list);
+                    return true;
                 }
             } catch (IOException ex1) {
                 Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
         return false;
+    }
+    
+    /**
+     * Get a translate from a language into a list of another languages.
+     *
+     * @param src First language
+     * @param dest Second language
+     * @param idWord The searched word (id)
+     * @return A list of word
+     */
+    public ArrayList<ArrayList<Word>> getTranslate(Language src, ArrayList<Language> dest, int idWord) {
+        // Init
+        ArrayList<ArrayList<Word>> res = new ArrayList<>();
+        // Loop
+        for(Language language : dest) {
+            res.add(getTranslate(src, language, idWord));
+        }
+        // Result
+        return res;
+    }
+
+    /**
+     * Get a translate from a language into an another language.
+     *
+     * @param src First language
+     * @param dest Second language
+     * @param idWord The searched word (id)
+     * @return A list of word
+     */
+    public ArrayList<Word> getTranslate(Language src, Language dest, int idWord) {
+        System.out.println("Try to search " + idWord + " in languages " + src.getIso() + "-" + dest.getIso());
+        // Init result
+        ArrayList<Word> res = new ArrayList<>();
+        if(idWord != -1) {
+            // Get the list of links
+            String languages = src.getIso() + dest.getIso();
+            ArrayList<Link> list = this.listLinks.get(languages);
+            for(Link link : list) {
+                if(link.getId1() == idWord) {
+                    // Add new word to the result list
+                    res.add(this.listWords.get(dest).get(link.getId2()));
+                }
+            }
+        }
+        // Result
+        return res;
     }
 
     /**
@@ -168,7 +216,7 @@ public class NewDictionary {
      * @param name Name of the word
      * @return Id of the word
      */
-    public int searchWordId(Language language, String name) {
+    public Word searchWord(Language language, String name) {
         // Get list of words
         if (listWords.containsKey(language)) {
             HashMap<Integer, Word> map = listWords.get(language);
@@ -179,11 +227,11 @@ public class NewDictionary {
                 int key = (Integer) it.next();
                 // If the good word
                 if (map.get(key).getName().equalsIgnoreCase(name)) {
-                    return key;
+                    map.get(key);
                 }
             }
         }
-        return -1;
+        return null;
     }
 
     /* GETTERS AND SETTERS */

@@ -3,13 +3,14 @@
  */
 package model;
 
+import java.util.Objects;
+
 /**
  *
  * @author Maxime
  */
-public enum Language {
-    Czech("čestiná", "cs"),
-    French("français", "fr");
+public class Language {
+    
 
     /**
      * Original name of the language.
@@ -27,7 +28,7 @@ public enum Language {
      * @param name Original name of the language.
      * @param iso Iso code.
      */
-    private Language(String name, String iso) {
+    public Language(String name, String iso) {
         this.name = name;
         this.iso = iso;
     }
@@ -49,4 +50,27 @@ public enum Language {
         return iso;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.iso);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Language other = (Language) obj;
+        if (!Objects.equals(this.iso, other.iso)) {
+            return false;
+        }
+        return true;
+    }
+
+    
 }
