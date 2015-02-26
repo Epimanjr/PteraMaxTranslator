@@ -60,6 +60,20 @@ public class NewDictionary {
                 System.out.println("NON OK");
             }
         }
+        // Loop for all combinaisons
+        for(int i=0;i<this.listLanguages.size();i++) {
+            for(int j=0;j<this.listLanguages.size();i++) {
+                // Only if languages if differents
+                if(i != j ) {
+                    System.out.print("Initialize list of \"" + this.listLanguages.get(i).getName() + "-" + this.listLanguages.get(j).getName() + "\" links ...");
+                    if(initializeSpecificListLinks(this.listLanguages.get(i), this.listLanguages.get(j))) {
+                        System.out.println("OK (" + this.listLinks.get(this.listLanguages.get(i).getIso() + this.listLanguages.get(j).getIso()).size() + " elements.)");
+                    } else{
+                        System.out.println("NON OK");
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -96,6 +110,49 @@ public class NewDictionary {
                     map = new HashMap<>();
                     this.listWords.put(language, map);
                     oos.writeObject(map);
+                }
+            } catch (IOException ex1) {
+                Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Initialize a new list of links with specifics languages.
+     *
+     * @param language1 First language
+     * @param language2 Second language
+     * @return True if well initialize, false else.
+     */
+    public boolean initializeSpecificListLinks(Language language1, Language language2) {
+        // Init pathname
+        String pathname = Config.folderName + "/" + Config.linkFileName + language1.getIso() + language2.getIso() + Config.extension;
+        ArrayList<Link> list;
+        // Test if exists
+        File f = new File(pathname);
+        try {
+            if (!f.exists()) {
+                throw new FileNotExistException();
+            }
+
+            // Read
+            try ( // Init Object
+                    ObjectInputStream ois = new ObjectInputStream(new FileInputStream(pathname))) {
+                // Read
+                list = (ArrayList<Link>) ois.readObject();
+                this.listLinks.put(language1.getIso() + language2.getIso(), list);
+                return true;
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotExistException ex) {
+            try {
+                try ( // Try to create new file
+                        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathname))) {
+                    list = new ArrayList<>();
+                    this.listLinks.put(language1.getIso() + language2.getIso(), list);
+                    oos.writeObject(list);
                 }
             } catch (IOException ex1) {
                 Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex1);
