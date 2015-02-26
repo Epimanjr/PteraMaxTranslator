@@ -228,11 +228,88 @@ public class NewDictionary {
                 int key = (Integer) it.next();
                 // If the good word
                 if (map.get(key).getName().equalsIgnoreCase(name)) {
-                    map.get(key);
+                    return map.get(key);
                 }
             }
         }
         return null;
+    }
+
+    /**
+     * Add and save !
+     *
+     * @param l1 First Language
+     * @param l2 Second Language
+     * @param name1 Name of the word in first language
+     * @param name2 Name of the word in second language
+     * @param gender1 Gender of the word in first language
+     * @param gender2 Gender of the word in second language
+     * @param phonetic1 Phonetic of the word in first language
+     * @param phonetic2 Phonetic of the word in second language
+     */
+    public void addAndSave(Language l1, Language l2, String name1, String name2, String gender1, String gender2, String phonetic1, String phonetic2) {
+        // Add new words
+        int i1 = addNewWord(l1, name1, gender1, phonetic1);
+        printData();
+        int i2 = addNewWord(l2, name2, gender2, phonetic2);
+        printData();
+        // Add Links
+        addNewLink(l1, l2, i1, i2);
+        printData();
+        // Save
+        save(l1, l2);
+    }
+
+    /**
+     * Add new link in specifics languages
+     *
+     * @param l1 Language 1
+     * @param l2 Language 2
+     * @param i1 First Integer
+     * @param i2 Second Integer
+     */
+    public void addNewLink(Language l1, Language l2, int i1, int i2) {
+        // First Link
+        String str = l1.getIso() + l2.getIso();
+        Link link1 = new Link(i1, i2);
+        if (!this.listLinks.get(str).contains(link1)) {
+            this.listLinks.get(str).add(link1);
+        }
+        // Second Link
+        str = l2.getIso() + l1.getIso();
+        Link link2 = new Link(i2, i1);
+        if (!this.listLinks.get(str).contains(link2)) {
+            this.listLinks.get(str).add(link2);
+        }
+    }
+
+    /**
+     * Add a new word in a specific language.
+     *
+     * @param language Language
+     * @param name Name of the word
+     * @param gender Gender of the word
+     * @param phonetic Phonetic of the word
+     * @return New id of the word
+     */
+    public int addNewWord(Language language, String name, String gender, String phonetic) {
+        // Create the word
+        Word word = new Word(name);
+        word.setGender(gender);
+        word.setPhonetic(phonetic);
+        // Check if exists
+        Word tmp = searchWord(language, name);
+        if (tmp != null) {
+            // Exists
+            if (tmp.getId() != (-1)) {
+                return tmp.getId();
+            }
+        }
+        // Not exists
+        int id = this.listWords.get(language).size();
+        word.setId(id);
+        this.listWords.get(language).put(id, word);
+        return id;
     }
 
     /**
@@ -244,14 +321,20 @@ public class NewDictionary {
     public void save(Language l1, Language l2) {
         // Save words
         saveWords(l1);
-        saveWords(l1);
+        saveWords(l2);
         // Save links
         saveLinks(l1, l2);
         saveLinks(l2, l1);
     }
-    
+
+    /**
+     * Save the links of a specific language.
+     *
+     * @param l1 First Language
+     * @param l2 Second Language
+     */
     public void saveLinks(Language l1, Language l2) {
-         // Init pathname
+        // Init pathname
         String pathname = Config.folderName + "/" + Config.linkFileName + l1.getIso() + l2.getIso() + Config.extension;
         // Get instance
         String str = l1.getIso() + l2.getIso();
@@ -286,7 +369,41 @@ public class NewDictionary {
         } catch (IOException ex) {
             Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+    }
+
+    /**
+     * Print in console all data.
+     */
+    public void printData() {
+        System.out.println("*** PRINT DATA *** ");
+        // Print word
+        Set set = listWords.keySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Language l = (Language) it.next();
+            System.out.println("Print \"" + l.getName() + "\" words : ");
+            HashMap<Integer, Word> map = listWords.get(l);
+            Set setMap = map.keySet();
+            Iterator itMap = setMap.iterator();
+            while (itMap.hasNext()) {
+                int i = (int) itMap.next();
+                Word w = map.get(i);
+                System.out.println(w.getId() + ": " + w.getName() + " -" + w.getGender() + "- " + w.getPhonetic());
+            }
+        }
+        // Print links
+        Set setLink = listLinks.keySet();
+        Iterator itLink = setLink.iterator();
+        while (itLink.hasNext()) {
+            String str = (String) itLink.next();
+            System.out.println("Print " + str + " links : ");
+            ArrayList<Link> list = listLinks.get(str);
+            for (Link l : list) {
+                System.out.println(l.getId1() + " - " + l.getId2());
+            }
+        }
+        System.out.println("*** END PRINT ***");
     }
 
     /* GETTERS AND SETTERS */

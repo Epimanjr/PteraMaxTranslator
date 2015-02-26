@@ -232,12 +232,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void validateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validateActionPerformed
         // TODO add your handling code here:
-        /*boolean b = treat.add(name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
-        if (b) {
-            validate.setBackground(Color.GREEN);
-        } else {
-            validate.setBackground(Color.RED);
-        }*/
+        czech.addAndSave(listLanguages.get(0), listLanguages.get(1), name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
+        
     }//GEN-LAST:event_validateActionPerformed
 
     /**

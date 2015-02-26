@@ -66,10 +66,7 @@ public class Language {
             return false;
         }
         final Language other = (Language) obj;
-        if (!Objects.equals(this.iso, other.iso)) {
-            return false;
-        }
-        return true;
+        return this.getIso().equals(other.getIso());
     }
 
     
