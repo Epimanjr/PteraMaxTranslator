@@ -6,6 +6,9 @@
 package graphic.swing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import model.Language;
 import model.NewDictionary;
 import model.Word;
@@ -25,11 +28,12 @@ public class MainFrame extends javax.swing.JFrame {
         this.setResizable(false);
         czech = new NewDictionary(listLanguages);
         czech.initialize();
-       
+
         labelTitle.setText(listLanguages.get(0).getName() + "/" + listLanguages.get(1).getName() + " dictionary !");
         labNew1.setText(listLanguages.get(0).getName());
         labNew2.setText(listLanguages.get(1).getName());
-        
+
+        initTable(listLanguages.get(0));
     }
 
     /**
@@ -62,6 +66,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,6 +214,55 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Simple dictionary", jPanel1);
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        String[] arrayLanguages = new String[listLanguages.size()];
+        for(int i=0;i<arrayLanguages.length;i++) {
+            arrayLanguages[i] = listLanguages.get(i).getName();
+        }
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(arrayLanguages));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Data", jPanel2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -222,8 +279,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         // TODO add your handling code here:
-        
-        if(!searchAction(0, 1)) {
+
+        if (!searchAction(0, 1)) {
             searchAction(1, 0);
         }
     }//GEN-LAST:event_searchActionPerformed
@@ -231,8 +288,15 @@ public class MainFrame extends javax.swing.JFrame {
     private void validateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validateActionPerformed
         // TODO add your handling code here:
         czech.addAndSave(listLanguages.get(0), listLanguages.get(1), name1.getText(), name2.getText(), gender1.getText(), gender2.getText(), phonetic1.getText(), phonetic2.getText());
-        
+
     }//GEN-LAST:event_validateActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+
+        Language selectedLanguage = listLanguages.get(jComboBox1.getSelectedIndex());
+        initTable(selectedLanguage);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -273,12 +337,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static NewDictionary czech;
     public static ArrayList<Language> listLanguages;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField gender1;
     private javax.swing.JTextField gender2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -286,9 +351,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labNew1;
     private javax.swing.JLabel labNew2;
     private javax.swing.JLabel labelTitle;
@@ -300,13 +368,19 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton validate;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Generate HTML to print the result.
+     *
+     * @param list List of words
+     * @return String
+     */
     public String htmlForSingleLanguage(ArrayList<Word> list) {
         // Init
         String res = "<html>", colorName = "#DD0000", colorPhonetic = "#0000DD", colorGender = "#222222";
         // Loop
         for (Word w : list) {
             res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span> ";
-            if(!w.getGender().trim().equals("")) {
+            if (!w.getGender().trim().equals("")) {
                 res += "<span color=\"" + colorGender + "\">" + w.getGender() + "</span> ";
             }
             res += " <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
@@ -314,12 +388,19 @@ public class MainFrame extends javax.swing.JFrame {
         // Return
         return res + "</html>";
     }
-    
+
+    /**
+     * Search a word !
+     *
+     * @param i1 First language (id)
+     * @param i2 Second language (id)
+     * @return If we found word
+     */
     public boolean searchAction(int i1, int i2) {
         System.out.print("Try to search the word " + search.getText() + " ... ");
         Word word = czech.searchWord(listLanguages.get(i1), search.getText());
-        if(word != null) {
-            if(word.getId() != -1) {
+        if (word != null) {
+            if (word.getId() != -1) {
                 System.out.println("OK");
                 // OK
                 ArrayList<Word> list = czech.getTranslate(listLanguages.get(i1), listLanguages.get(i2), word.getId());
@@ -332,5 +413,34 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println("NULL");
         }
         return false;
+    }
+
+    /**
+     * Initialize table for data.
+     *
+     * @param language Language
+     */
+    public void initTable(Language language) {
+        // Init
+        int size = czech.getListWords().get(language).size();
+        HashMap<Integer, Word> map = czech.getListWords().get(language);
+        String[][] obj = new String[size][4];
+        // Loop
+        Set set = map.keySet();
+        Iterator it = set.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            Word w = map.get(it.next());
+            obj[i][0] = "" + w.getId();
+            obj[i][1] = w.getName();
+            obj[i][2] = w.getGender();
+            obj[i][3] = w.getPhonetic();
+        }
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+                obj,
+                new String[]{
+                    "id", "name", "gender", "phonetic"
+                }
+        ));
     }
 }
