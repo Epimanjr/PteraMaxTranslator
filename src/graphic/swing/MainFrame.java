@@ -381,7 +381,7 @@ public class MainFrame extends javax.swing.JFrame {
         for (Word w : list) {
             res += "<p style=\"font-size: 20px;\"><span color=\"" + colorName + "\">" + w.getName() + "</span> ";
             if (!w.getGender().trim().equals("")) {
-                res += "<span color=\"" + colorGender + "\">" + w.getGender() + "</span> ";
+                res += "<span style=\"font-size: 14px;\" color=\"" + colorGender + "\">" + w.getGender() + "</span> ";
             }
             res += " <span color=\"" + colorPhonetic + "\">" + w.getPhonetic() + "</span</p>";
         }
