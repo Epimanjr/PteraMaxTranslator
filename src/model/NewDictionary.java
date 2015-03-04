@@ -83,7 +83,7 @@ public class NewDictionary {
      * @param language Language
      * @return True if well initialize, false else.
      */
-    public boolean initializeSpecificListWords(Language language) {
+    private boolean initializeSpecificListWords(Language language) {
         // Init pathname
         String pathname = Config.folderName + "/" + Config.wordFileName + language.getIso() + Config.extension;
         HashMap<Integer, Word> map;
@@ -109,6 +109,8 @@ public class NewDictionary {
                 try ( // Try to create new file
                         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathname))) {
                     map = new HashMap<>();
+                    // Init map
+                    map.put(-1,  new Word(language, 0, "", "", ""));
                     this.listWords.put(language, map);
                     oos.writeObject(map);
                     return true;
@@ -127,7 +129,7 @@ public class NewDictionary {
      * @param language2 Second language
      * @return True if well initialize, false else.
      */
-    public boolean initializeSpecificListLinks(Language language1, Language language2) {
+    private boolean initializeSpecificListLinks(Language language1, Language language2) {
         // Init pathname
         String pathname = Config.folderName + "/" + Config.linkFileName + language1.getIso() + language2.getIso() + Config.extension;
         ArrayList<Link> list;
@@ -268,7 +270,7 @@ public class NewDictionary {
      * @param i1 First Integer
      * @param i2 Second Integer
      */
-    public void addNewLink(Language l1, Language l2, int i1, int i2) {
+    private void addNewLink(Language l1, Language l2, int i1, int i2) {
         // First Link
         String str = l1.getIso() + l2.getIso();
         Link link1 = new Link(i1, i2);
@@ -292,7 +294,7 @@ public class NewDictionary {
      * @param phonetic Phonetic of the word
      * @return New id of the word
      */
-    public int addNewWord(Language language, String name, String gender, String phonetic) {
+    private int addNewWord(Language language, String name, String gender, String phonetic) {
         // Create the word
         Word word = new Word(name);
         word.setGender(gender);
@@ -333,7 +335,7 @@ public class NewDictionary {
      * @param l1 First Language
      * @param l2 Second Language
      */
-    public void saveLinks(Language l1, Language l2) {
+    private void saveLinks(Language l1, Language l2) {
         // Init pathname
         String pathname = Config.folderName + "/" + Config.linkFileName + l1.getIso() + l2.getIso() + Config.extension;
         // Get instance
@@ -355,7 +357,7 @@ public class NewDictionary {
      *
      * @param l1 Language
      */
-    public void saveWords(Language l1) {
+    private void saveWords(Language l1) {
         // Init pathname
         String pathname = Config.folderName + "/" + Config.wordFileName + l1.getIso() + Config.extension;
         // Get instance
@@ -407,28 +409,14 @@ public class NewDictionary {
     }
 
     /* GETTERS AND SETTERS */
-    public ArrayList<Language> getListLanguages() {
-        return listLanguages;
-    }
-
-    public void setListLanguages(ArrayList<Language> listLanguages) {
-        this.listLanguages = listLanguages;
-    }
-
-    public HashMap<Language, HashMap<Integer, Word>> getListWords() {
-        return listWords;
-    }
-
-    public void setListWords(HashMap<Language, HashMap<Integer, Word>> listWords) {
-        this.listWords = listWords;
-    }
-
-    public HashMap<String, ArrayList<Link>> getListLinks() {
-        return listLinks;
-    }
-
-    public void setListLinks(HashMap<String, ArrayList<Link>> listLinks) {
-        this.listLinks = listLinks;
+    /**
+     * Get the list of words in a specific language.
+     *
+     * @param language Language
+     * @return The list of words
+     */
+    public HashMap<Integer, Word> getListWords(Language language) {
+        return this.listWords.get(language);
     }
 
 }

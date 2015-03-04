@@ -422,8 +422,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public void initTable(Language language) {
         // Init
-        int size = czech.getListWords().get(language).size();
-        HashMap<Integer, Word> map = czech.getListWords().get(language);
+        int size = czech.getListWords(language).size();
+        HashMap<Integer, Word> map = czech.getListWords(language);
         String[][] obj = new String[size][4];
         // Loop
         Set set = map.keySet();

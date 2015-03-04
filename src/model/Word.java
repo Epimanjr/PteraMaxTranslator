@@ -46,6 +46,21 @@ public class Word implements Serializable {
     }
 
     /**
+     * Create a word with all parameters (without id).
+     *
+     * @param language Language of the word.
+     * @param name Name of the word.
+     * @param gender Gender of the word.
+     * @param phonetic Phonetic of the word.
+     */
+    public Word(Language language, String name, String gender, String phonetic) {
+        this.language = language;
+        this.name = name;
+        this.gender = gender;
+        this.phonetic = phonetic;
+    }
+
+    /**
      * Create a word with all parameters.
      *
      * @param language Language of the word.
