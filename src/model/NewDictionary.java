@@ -110,7 +110,7 @@ public class NewDictionary {
                         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathname))) {
                     map = new HashMap<>();
                     // Init map
-                    map.put(-1,  new Word(language, 0, "", "", ""));
+                    map.put(-1,  new Word(language, -1, "", "", ""));
                     this.listWords.put(language, map);
                     oos.writeObject(map);
                     return true;

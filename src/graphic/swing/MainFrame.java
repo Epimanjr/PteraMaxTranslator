@@ -431,10 +431,14 @@ public class MainFrame extends javax.swing.JFrame {
         int i = 0;
         while (it.hasNext()) {
             Word w = map.get(it.next());
-            obj[i][0] = "" + w.getId();
-            obj[i][1] = w.getName();
-            obj[i][2] = w.getGender();
-            obj[i][3] = w.getPhonetic();
+            if (w.getId() != (-1)) {
+                obj[i][0] = "" + w.getId();
+                obj[i][1] = w.getName();
+                obj[i][2] = w.getGender();
+                obj[i][3] = w.getPhonetic();
+                i++;
+            }
+
         }
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 obj,

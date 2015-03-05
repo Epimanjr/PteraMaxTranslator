@@ -3,13 +3,14 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Maxime
  */
-public class Language {
+public class Language implements Serializable {
     
 
     /**
