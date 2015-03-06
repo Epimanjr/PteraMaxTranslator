@@ -3,7 +3,6 @@ package model;
 import exception.FileNotExistException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,17 +23,17 @@ public class NewDictionary {
     /**
      * List of languages.
      */
-    private ArrayList<Language> listLanguages;
+    private final ArrayList<Language> listLanguages;
 
     /**
      * All list of words.
      */
-    private HashMap<Language, HashMap<Integer, Word>> listWords;
+    private final HashMap<Language, HashMap<Integer, Word>> listWords;
 
     /**
      * All list of links.
      */
-    private HashMap<String, ArrayList<Link>> listLinks;
+    private final HashMap<String, ArrayList<Link>> listLinks;
 
     /**
      * Create a Dictionary with specifics languages.
@@ -53,14 +52,16 @@ public class NewDictionary {
      */
     public void initialize() {
         // Loop for all languages
-        for (Language l : this.listLanguages) {
+        this.listLanguages.stream().map((l) -> {
             System.out.print("Initialize list of \"" + l.getName() + "\" words ... ");
+            return l;
+        }).forEach((l) -> {
             if (initializeSpecificListWords(l)) {
                 System.out.println("OK (" + this.listWords.get(l).size() + " elements.)");
             } else {
                 System.out.println("NON OK");
             }
-        }
+        });
         // Loop for all combinaisons
         for (int i = 0; i < this.listLanguages.size(); i++) {
             for (int j = 0; j < this.listLanguages.size(); j++) {
@@ -178,9 +179,9 @@ public class NewDictionary {
         // Init
         ArrayList<ArrayList<Word>> res = new ArrayList<>();
         // Loop
-        for (Language language : dest) {
+        dest.stream().forEach((language) -> {
             res.add(getTranslate(src, language, idWord));
-        }
+        });
         // Result
         return res;
     }
@@ -201,12 +202,10 @@ public class NewDictionary {
             // Get the list of links
             String languages = src.getIso() + dest.getIso();
             ArrayList<Link> list = this.listLinks.get(languages);
-            for (Link link : list) {
-                if (link.getId1() == idWord) {
-                    // Add new word to the result list
-                    res.add(this.listWords.get(dest).get(link.getId2()));
-                }
-            }
+            list.stream().filter((link) -> (link.getId1() == idWord)).forEach((link) -> {
+                // Add new word to the result list
+                res.add(this.listWords.get(dest).get(link.getId2()));
+            });
         }
         // Result
         return res;
@@ -320,7 +319,7 @@ public class NewDictionary {
      * @param l1 First language
      * @param l2 Second language
      */
-    public void save(Language l1, Language l2) {
+    private void save(Language l1, Language l2) {
         // Save words
         saveWords(l1);
         saveWords(l2);
@@ -401,9 +400,9 @@ public class NewDictionary {
             String str = (String) itLink.next();
             System.out.println("Print " + str + " links : ");
             ArrayList<Link> list = listLinks.get(str);
-            for (Link l : list) {
+            list.stream().forEach((l) -> {
                 System.out.println(l.getId1() + " - " + l.getId2());
-            }
+            });
         }
         System.out.println("*** END PRINT ***");
     }
