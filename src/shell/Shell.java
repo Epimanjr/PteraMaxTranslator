@@ -4,7 +4,7 @@ import exception.LanguageException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.Language;
-import model.NewDictionary;
+import model.Dictionary;
 import model.Word;
 
 public class Shell {
@@ -19,7 +19,7 @@ public class Shell {
      */
     private final Scanner sc = new Scanner(System.in);
 
-    NewDictionary czech;
+    Dictionary czech;
 
     /**
      * Create a shell with specifics languages.
@@ -35,7 +35,7 @@ public class Shell {
      */
     public void run() {
         // Init dictionary
-        czech = new NewDictionary(listLanguages);
+        czech = new Dictionary(listLanguages);
         czech.initialize();
         // Begin loop
         String prompt = "PteraMaxTranslator:$ ";

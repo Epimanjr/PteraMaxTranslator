@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import model.Language;
-import model.NewDictionary;
+import model.Dictionary;
 import model.Word;
 
 /**
@@ -26,7 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         this.setTitle("PteraMax Translator");
         this.setResizable(false);
-        czech = new NewDictionary(listLanguages);
+        czech = new Dictionary(listLanguages);
         czech.initialize();
 
         labelTitle.setText(listLanguages.get(0).getName() + "/" + listLanguages.get(1).getName() + " dictionary !");
@@ -338,7 +338,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
-    public static NewDictionary czech;
+    public static Dictionary czech;
     public static ArrayList<Language> listLanguages;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField gender1;

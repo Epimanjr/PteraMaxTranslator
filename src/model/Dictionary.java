@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Maxime BLAISE
  */
-public class NewDictionary {
+public class Dictionary {
 
     /**
      * List of languages.
@@ -40,7 +40,7 @@ public class NewDictionary {
      *
      * @param listLanguages List of languages.
      */
-    public NewDictionary(ArrayList<Language> listLanguages) {
+    public Dictionary(ArrayList<Language> listLanguages) {
         this.listLanguages = listLanguages;
         // Init HashMap
         this.listWords = new HashMap<>();
@@ -104,7 +104,7 @@ public class NewDictionary {
                 return true;
             }
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotExistException ex) {
             try {
                 try ( // Try to create new file
@@ -117,7 +117,7 @@ public class NewDictionary {
                     return true;
                 }
             } catch (IOException ex1) {
-                Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
         return false;
@@ -150,7 +150,7 @@ public class NewDictionary {
                 return true;
             }
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotExistException ex) {
             try {
                 try ( // Try to create new file
@@ -161,7 +161,7 @@ public class NewDictionary {
                     return true;
                 }
             } catch (IOException ex1) {
-                Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
         return false;
@@ -195,7 +195,6 @@ public class NewDictionary {
      * @return A list of word
      */
     public ArrayList<Word> getTranslate(Language src, Language dest, int idWord) {
-        System.out.println("Try to search " + idWord + " in languages " + src.getIso() + "-" + dest.getIso());
         // Init result
         ArrayList<Word> res = new ArrayList<>();
         if (idWord != -1) {
@@ -251,12 +250,9 @@ public class NewDictionary {
     public void addAndSave(Language l1, Language l2, String name1, String name2, String gender1, String gender2, String phonetic1, String phonetic2) {
         // Add new words
         int i1 = addNewWord(l1, name1, gender1, phonetic1);
-        printData();
         int i2 = addNewWord(l2, name2, gender2, phonetic2);
-        printData();
         // Add Links
         addNewLink(l1, l2, i1, i2);
-        printData();
         // Save
         save(l1, l2);
     }
@@ -347,7 +343,7 @@ public class NewDictionary {
                 oos.writeObject(list);
             }
         } catch (IOException ex) {
-            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -368,7 +364,7 @@ public class NewDictionary {
                 oos.writeObject(map);
             }
         } catch (IOException ex) {
-            Logger.getLogger(NewDictionary.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dictionary.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
